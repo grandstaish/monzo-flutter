@@ -1,0 +1,23 @@
+name: monzo_client
+description: The Monzo client written in flutter
+
+dependencies:
+  flutter:
+    sdk: flutter
+  flutter_localizations:
+    sdk: flutter
+  intl: 0.15.2
+  intl_translation: 0.16.2
+  http: 0.11.3+16
+  uuid: 0.5.3
+  shared_preferences: 0.4.0
+  meta: 1.1.2
+  fluro: ^1.3.1
+  cupertino_icons: ^0.1.0
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+
+flutter:
+  uses-material-design: true

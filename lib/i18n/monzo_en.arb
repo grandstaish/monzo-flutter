@@ -1,0 +1,21 @@
+{
+  "@@last_modified": "2018-03-24T20:47:52.444410",
+  "appTitle": "Monzo",
+  "@appTitle": {
+    "description": "Title for the Monzo application",
+    "type": "text",
+    "placeholders": {}
+  },
+  "sharedContinueButton": "CONTINUE",
+  "@sharedContinueButton": {
+    "description": "Continue button text",
+    "type": "text",
+    "placeholders": {}
+  },
+  "onboardingLoginButton": "I ALREADY HAVE A MONZO ACCOUNT",
+  "@onboardingLoginButton": {
+    "description": "Login button on the onboarding screen",
+    "type": "text",
+    "placeholders": {}
+  }
+}
