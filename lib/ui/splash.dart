@@ -38,14 +38,15 @@ class _SplashState extends State<Splash> {
       route = '/login';
     }
 
-    _router.navigateTo(context, route);
+    _router.navigateTo(context, route, replace: true);
   }
 
   @override
   Widget build(BuildContext context) {
+    ThemeData theme = Theme.of(context);
     return new Container(
         alignment: Alignment.center,
-        color: MonzoTheme.dark.backgroundColor,
+        color: theme.backgroundColor,
         child: new CircularProgressIndicator()
     );
   }

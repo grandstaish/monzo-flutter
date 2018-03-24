@@ -16,9 +16,8 @@ class App extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Strings strings = Strings.of(context);
     return new MaterialApp(
-      title: strings.appTitle(),
+      onGenerateTitle: (context) => Strings.of(context).appTitle(),
       localizationsDelegates: [
         new StocksLocalizationsDelegate(),
         GlobalMaterialLocalizations.delegate,
