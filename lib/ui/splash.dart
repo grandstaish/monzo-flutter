@@ -38,7 +38,20 @@ class _SplashState extends State<Splash> {
       route = '/login';
     }
 
-    _router.navigateTo(context, route, replace: true);
+    // No transition
+    var transition = (BuildContext context, Animation<double> animation,
+        Animation<double> secondaryAnimation, Widget child) {
+      return child;
+    };
+
+    _router.navigateTo(
+        context,
+        route,
+        replace: true,
+        transitionDuration: const Duration(milliseconds: 0),
+        transition: TransitionType.custom,
+        transitionBuilder: transition
+    );
   }
 
   @override

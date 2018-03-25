@@ -20,4 +20,14 @@ dev_dependencies:
     sdk: flutter
 
 flutter:
+  fonts:
+    - family: MontserratBold
+      fonts:
+        - asset: fonts/montserrat_bold.ttf
+    - family: MonsterratLight
+      fonts:
+        - asset: fonts/montserrat_light.otf
+    - family: OcraExtended
+      fonts:
+        - asset: fonts/ocraextended.ttf
   uses-material-design: true

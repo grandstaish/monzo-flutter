@@ -40,7 +40,7 @@ class Routes {
         home,
         handler: new Handler(handlerFunc: (context, params) {
           return new Home(router, authManager);
-        })
+        }),
     );
   }
 }
