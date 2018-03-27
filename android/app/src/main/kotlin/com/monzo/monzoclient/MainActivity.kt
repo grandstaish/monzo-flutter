@@ -25,6 +25,7 @@ class MainActivity: FlutterActivity() {
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
     GeneratedPluginRegistrant.registerWith(this)
+    VideoPlayerPlugin.registerWith(registrarFor("io.flutter.plugins.videoplayer.VideoPlayerPlugin"))
 
     launchView = createLaunchView()
     if (launchView != null) {
@@ -52,7 +53,7 @@ class MainActivity: FlutterActivity() {
   /**
    * Let the user specify whether the activity's `windowBackground` is a launch screen
    * and should be shown until the first frame via a <meta-data> tag in the activity.
-  </meta-data> */
+   */
   private fun showSplashScreenUntilFirstFrame(): Boolean {
     return try {
       val activityInfo = packageManager.getActivityInfo(componentName, PackageManager.GET_META_DATA)

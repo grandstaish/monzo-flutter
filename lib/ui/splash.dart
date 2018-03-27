@@ -2,7 +2,6 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:fluro/fluro.dart';
 import 'package:monzo_client/data/auth/auth_manager.dart';
-import 'package:monzo_client/ui/config/theme.dart';
 
 class Splash extends StatefulWidget {
   final Router _router;

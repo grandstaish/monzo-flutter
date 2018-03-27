@@ -2,6 +2,7 @@ import 'dart:ui' show Color;
 
 class Palette {
   Palette._();
+  static const int ALPHA_50 = 127;
 
   static const Color darkBlue = const Color(0xFF15233C);
 

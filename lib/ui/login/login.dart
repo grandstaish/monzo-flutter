@@ -2,10 +2,12 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:fluro/fluro.dart';
 import 'package:monzo_client/strings.dart';
-import 'package:monzo_client/ui/config/palette.dart';
 import 'package:monzo_client/data/auth/auth_manager.dart';
+import 'package:monzo_client/ui/config/palette.dart';
 import 'package:monzo_client/ui/common/action_buttons.dart';
 import 'package:monzo_client/ui/common/monzo_logo.dart';
+import 'package:monzo_client/ui/common/video/center_crop_video.dart';
+import 'package:monzo_client/ui/common/video/video_lifecycle.dart';
 
 class Login extends StatelessWidget {
   final Router _router;
@@ -23,17 +25,26 @@ class Login extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    ThemeData theme = Theme.of(context);
     Strings strings = Strings.of(context);
     return new Stack(
       alignment: Alignment.bottomLeft,
       children: <Widget>[
-        new Container(
-          color: theme.backgroundColor, // TODO: video
+        new DecoratedBox(
+          decoration: new BoxDecoration(
+            gradient: new LinearGradient(
+              begin: Alignment.topCenter,
+              end: Alignment.bottomCenter,
+              colors: <Color>[
+                Palette.darkBlue.withAlpha(Palette.ALPHA_50),
+                Palette.darkBlue.withAlpha(Palette.ALPHA_50),
+                Palette.darkBlue
+              ]
+            ),
+          ),
+          position: DecorationPosition.foreground,
+          child: new _OnboardingVideoBackground(),
         ),
-        new Center(
-          child: new AnimatedMonzoLogo(),
-        ),
+        new Center(child: new AnimatedMonzoLogo()),
         new ActionButtons(
           primaryButtonText: strings.sharedContinueButton(),
           primaryButtonHandler: _onContinuePressed,
@@ -75,6 +86,19 @@ class _AnimatedMonzoLogoState extends State<AnimatedMonzoLogo> {
       height: 58.0,
       textColor: Palette.white,
       style: _logoStyle,
+    );
+  }
+}
+
+class _OnboardingVideoBackground extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return new SimpleVideoPlayer(
+        "assets/sunlight.mp4",
+        (context, controller) {
+          return new CenterCropVideo(controller);
+        },
+        isLooping: true
     );
   }
 }

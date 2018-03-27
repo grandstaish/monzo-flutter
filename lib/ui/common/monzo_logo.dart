@@ -1,4 +1,4 @@
-import 'dart:ui' as ui show TextBox, lerpDouble, ClipOp;
+import 'dart:ui' as ui show TextBox, lerpDouble;
 
 import 'package:flutter/widgets.dart';
 import 'package:flutter/material.dart';
