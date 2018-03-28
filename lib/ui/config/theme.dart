@@ -7,12 +7,16 @@ class MonzoTheme {
     primaryColor: Palette.skyBlue,
     accentColor: Palette.coral,
     backgroundColor: Palette.darkBlue,
+    buttonTheme: thickerButtonTheme
   );
 
   static ThemeData light = new ThemeData(
       brightness: Brightness.light,
       primaryColor: Palette.skyBlue,
       accentColor: Palette.coral,
-      backgroundColor: Palette.white
+      backgroundColor: Palette.white,
+      buttonTheme: thickerButtonTheme
   );
+
+  static ButtonThemeData thickerButtonTheme = new ButtonThemeData(height: 40.0);
 }
