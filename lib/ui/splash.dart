@@ -1,26 +1,28 @@
 import 'dart:async';
+import 'package:meta/meta.dart';
 import 'package:flutter/material.dart';
 import 'package:fluro/fluro.dart';
 import 'package:monzo_client/data/auth/auth_manager.dart';
 
 class Splash extends StatefulWidget {
-  final Router _router;
-  final AuthManager _authManager;
+  Splash({
+    Key key,
+    @required this.router,
+    @required this.authManager
+  }) : assert(router != null),
+       assert(authManager != null),
+       super(key: key);
 
-  const Splash(this._router, this._authManager);
+  final Router router;
+  final AuthManager authManager;
 
   @override
   State<StatefulWidget> createState() {
-    return new _SplashState(_router, _authManager);
+    return new _SplashState();
   }
 }
 
 class _SplashState extends State<Splash> {
-  final AuthManager _authManager;
-  final Router _router;
-
-  _SplashState(this._router, this._authManager);
-
   @override
   void initState() {
     super.initState();
@@ -28,10 +30,10 @@ class _SplashState extends State<Splash> {
   }
 
   Future _init() async {
-    await _authManager.init();
+    await widget.authManager.init();
 
     String route;
-    if (_authManager.loggedIn) {
+    if (widget.authManager.loggedIn) {
       route = '/home';
     } else {
       route = '/login';
@@ -43,7 +45,7 @@ class _SplashState extends State<Splash> {
       return child;
     };
 
-    _router.navigateTo(
+    widget.router.navigateTo(
         context,
         route,
         replace: true,

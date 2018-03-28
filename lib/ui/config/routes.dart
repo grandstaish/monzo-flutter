@@ -21,7 +21,7 @@ class Routes {
         handler: new Handler(handlerFunc: (context, params) {
           return new Theme(
               data: MonzoTheme.dark,
-              child: new Splash(router, authManager)
+              child: new Splash(router: router, authManager: authManager)
           );
         })
     );
@@ -31,7 +31,7 @@ class Routes {
         handler: new Handler(handlerFunc: (context, params) {
           return new Theme(
               data: MonzoTheme.dark,
-              child: new Login(router, authManager)
+              child: new Login(router: router, authManager: authManager)
           );
         })
     );
@@ -39,7 +39,7 @@ class Routes {
     router.define(
         home,
         handler: new Handler(handlerFunc: (context, params) {
-          return new Home(router, authManager);
+          return new Home(router: router, authManager: authManager);
         }),
     );
   }

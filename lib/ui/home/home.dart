@@ -1,12 +1,19 @@
+import 'package:meta/meta.dart';
 import 'package:flutter/material.dart';
 import 'package:fluro/fluro.dart';
 import 'package:monzo_client/data/auth/auth_manager.dart';
 
 class Home extends StatelessWidget {
-  final Router _router;
-  final AuthManager _authManager;
+  Home({
+    Key key,
+    @required this.router,
+    @required this.authManager
+  }) : assert(router != null),
+       assert(authManager != null),
+       super(key: key);
 
-  const Home(this._router, this._authManager);
+  final Router router;
+  final AuthManager authManager;
 
   @override
   Widget build(BuildContext context) {
