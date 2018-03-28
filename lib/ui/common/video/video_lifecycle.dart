@@ -1,27 +1,35 @@
 import 'package:flutter/material.dart';
 import 'package:monzo_client/ui/common/video/video_player.dart';
+import 'package:meta/meta.dart';
 
 typedef Widget VideoWidgetBuilder(
     BuildContext context, VideoPlayerController controller);
 
 /// A widget connecting its lifecycle to a [VideoPlayerController].
-class SimpleVideoPlayer extends StatefulWidget {
+class VideoPlayerLifecycle extends StatefulWidget {
   final VideoWidgetBuilder childBuilder;
   final String asset;
   final bool isLooping;
 
-  SimpleVideoPlayer(this.asset, this.childBuilder, {this.isLooping});
+  VideoPlayerLifecycle({
+    Key key,
+    @required this.asset,
+    @required this.childBuilder,
+    this.isLooping
+  }) : assert(asset != null),
+       assert(childBuilder != null),
+       super(key: key);
 
   @override
-  _SimpleVideoPlayerState createState() {
-    return new _SimpleVideoPlayerState();
+  _VideoPlayerLifecycleState createState() {
+    return new _VideoPlayerLifecycleState();
   }
 }
 
-class _SimpleVideoPlayerState extends State<SimpleVideoPlayer> {
+class _VideoPlayerLifecycleState extends State<VideoPlayerLifecycle> {
   VideoPlayerController controller;
 
-  _SimpleVideoPlayerState();
+  _VideoPlayerLifecycleState();
 
   @override
   void initState() {
