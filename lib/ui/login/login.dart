@@ -55,7 +55,7 @@ class _AnimatedMonzoLogoState extends State<_AnimatedMonzoLogo> {
   @override
   void initState() {
     super.initState();
-    _timer = new Timer(const Duration(milliseconds: 400), () {
+    _timer = new Timer(const Duration(milliseconds: 600), () {
       setState(() {
         _logoStyle = MonzoLogoStyle.horizontal;
       });
@@ -133,8 +133,8 @@ class _OnboardingVideoBackground extends StatelessWidget {
   Widget build(BuildContext context) {
     return new VideoPlayerLifecycle(
         asset: "assets/sunlight.mp4",
-        childBuilder: (BuildContext context, VideoPlayerController controller) {
-          if (controller.value.initialized && controller.value.isPlaying) {
+        childBuilder: (BuildContext context, VideoPlayerController controller, bool videoReallyPlaying) {
+          if (controller.value.initialized && videoReallyPlaying) {
             final size = controller.value.size;
             return new DecoratedBox(
               decoration: new BoxDecoration(
@@ -155,7 +155,7 @@ class _OnboardingVideoBackground extends StatelessWidget {
               )
             );
           } else {
-            return new Container();
+            return new Container(color: Palette.darkBlue);
           }
         },
         isLooping: true
