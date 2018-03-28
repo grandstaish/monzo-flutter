@@ -26,19 +26,16 @@ class Login extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Strings strings = Strings.of(context);
     return new Stack(
       alignment: Alignment.center,
       children: <Widget>[
         new _OnboardingVideoBackground(),
-        new AnimatedMonzoLogo(),
+        new _AnimatedMonzoLogo(),
         new Align(
           alignment: Alignment.bottomCenter,
-          child: new ActionButtons(
-            primaryButtonText: strings.sharedContinueButton(),
-            primaryButtonHandler: _onContinuePressed,
-            secondaryButtonText: strings.onboardingLoginButton(),
-            secondaryButtonHandler: _onLoginPressed,
+          child: _AnimatedActionButtons(
+            onContinuePressed: _onContinuePressed,
+            onLoginPressed: _onLoginPressed,
           ),
         )
       ],
@@ -46,16 +43,18 @@ class Login extends StatelessWidget {
   }
 }
 
-class AnimatedMonzoLogo extends StatefulWidget {
+class _AnimatedMonzoLogo extends StatefulWidget {
   @override
   State<StatefulWidget> createState() => new _AnimatedMonzoLogoState();
 }
 
-class _AnimatedMonzoLogoState extends State<AnimatedMonzoLogo> {
+class _AnimatedMonzoLogoState extends State<_AnimatedMonzoLogo> {
   Timer _timer;
   MonzoLogoStyle _logoStyle = MonzoLogoStyle.markOnly;
 
-  _AnimatedMonzoLogoState() {
+  @override
+  void initState() {
+    super.initState();
     _timer = new Timer(const Duration(milliseconds: 400), () {
       setState(() {
         _logoStyle = MonzoLogoStyle.horizontal;
@@ -80,13 +79,62 @@ class _AnimatedMonzoLogoState extends State<AnimatedMonzoLogo> {
   }
 }
 
+class _AnimatedActionButtons extends StatefulWidget {
+  _AnimatedActionButtons({
+    this.onContinuePressed,
+    this.onLoginPressed
+  });
+
+  final VoidCallback onContinuePressed;
+  final VoidCallback onLoginPressed;
+
+  @override
+  State<StatefulWidget> createState() => _AnimatedActionButtonsState();
+}
+
+class _AnimatedActionButtonsState extends State<_AnimatedActionButtons> {
+  Timer _timer;
+  bool _visible = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _timer = new Timer(const Duration(milliseconds: 1400), () {
+      setState(() {
+        _visible = true;
+      });
+    });
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _timer.cancel();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    Strings strings = Strings.of(context);
+    return new AnimatedOpacity(
+      opacity: _visible ? 1.0 : 0.0,
+      duration: new Duration(milliseconds: 300),
+      child: new ActionButtons(
+        primaryButtonText: strings.sharedContinueButton(),
+        primaryButtonHandler: widget.onContinuePressed,
+        secondaryButtonText: strings.onboardingLoginButton(),
+        secondaryButtonHandler: widget.onLoginPressed,
+      ),
+    );
+  }
+}
+
 class _OnboardingVideoBackground extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return new VideoPlayerLifecycle(
         asset: "assets/sunlight.mp4",
         childBuilder: (BuildContext context, VideoPlayerController controller) {
-          if (controller.value.initialized) {
+          if (controller.value.initialized && controller.value.isPlaying) {
             final size = controller.value.size;
             return new DecoratedBox(
               decoration: new BoxDecoration(
