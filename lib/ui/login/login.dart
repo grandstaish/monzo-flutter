@@ -1,7 +1,8 @@
 import 'dart:async';
 import 'package:meta/meta.dart';
-import 'package:flutter/material.dart';
 import 'package:fluro/fluro.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:monzo_client/strings.dart';
 import 'package:monzo_client/data/auth/auth_manager.dart';
 import 'package:monzo_client/ui/config/palette.dart';
@@ -11,7 +12,9 @@ import 'package:monzo_client/ui/common/monzo_logo.dart';
 import 'package:monzo_client/ui/common/video/video_player.dart';
 import 'package:monzo_client/ui/common/video/video_lifecycle.dart';
 
-class Login extends StatelessWidget {
+const MethodChannel _channel = const MethodChannel("com.monzo/oauthPlugin");
+
+class Login extends StatefulWidget {
   Login({
     Key key,
     @required this.router,
@@ -23,12 +26,51 @@ class Login extends StatelessWidget {
   final Router router;
   final AuthManager authManager;
 
-  void _onContinuePressed() {
+  @override
+  State<Login> createState() => _LoginState();
+}
+
+class _LoginState extends State<Login> {
+  @override
+  void initState() {
+    super.initState();
+    _channel.invokeMethod('connect');
+
+    var url = widget.authManager.authUrl;
+    _channel.invokeMethod('setUrl', <String, dynamic>{'url': url});
+
+    _channel.setMethodCallHandler(_handlePlatformMessages);
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _channel.invokeMethod('disconnect');
+  }
+
+  void _onContinuePressed(BuildContext context) {
     print("Hello world!");
   }
 
-  void _onLoginPressed() {
-    print("Hello world!");
+  void _onLoginPressed(BuildContext context) {
+    _channel.invokeMethod('launch');
+  }
+
+  Future<Null> _handlePlatformMessages(MethodCall call) async {
+    switch (call.method) {
+      case "onRedirect":
+        var uri = call.arguments['uri'];
+        setState(() {
+          // Loading
+        });
+        bool successful = await widget.authManager.login(uri);
+        setState(() {
+          // Not loading
+        });
+        break;
+      default:
+        break;
+    }
   }
 
   @override
@@ -92,8 +134,8 @@ class _AnimatedActionButtons extends StatefulWidget {
     this.onLoginPressed
   });
 
-  final VoidCallback onContinuePressed;
-  final VoidCallback onLoginPressed;
+  final ActionCallback onContinuePressed;
+  final ActionCallback onLoginPressed;
 
   @override
   State<StatefulWidget> createState() => _AnimatedActionButtonsState();

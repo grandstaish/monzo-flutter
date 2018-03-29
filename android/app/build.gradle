@@ -28,7 +28,7 @@ android {
   defaultConfig {
     applicationId "com.monzo.monzoclient"
 
-    minSdkVersion 21
+    minSdkVersion 24
     targetSdkVersion 27
 
     versionCode 1
@@ -36,13 +36,10 @@ android {
 
     testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
 
-    buildConfigField 'String', 'CLIENT_ID', /"$clientId"/
-    buildConfigField 'String', 'CLIENT_SECRET', /"$clientSecret"/
-    buildConfigField 'String', 'REDIRECT_URL', /"$redirectScheme:\/\/$redirectPath"/
-
     manifestPlaceholders << [
         redirectScheme: redirectScheme,
-        redirectPath  : redirectPath
+        redirectHost: redirectHost,
+        redirectPathPrefix: redirectPathPrefix
     ]
   }
 
@@ -57,8 +54,13 @@ flutter {
   source '../..'
 }
 
+ext {
+  supportVersion = '27.1.0'
+}
+
 dependencies {
   implementation "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version"
+  implementation "com.android.support:customtabs:$supportVersion"
   testImplementation 'junit:junit:4.12'
   androidTestImplementation 'com.android.support.test:runner:1.0.1'
   androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.1'

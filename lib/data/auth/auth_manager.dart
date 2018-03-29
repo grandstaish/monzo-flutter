@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
+import 'package:uuid/uuid.dart';
 import 'package:http/http.dart';
 import 'package:monzo_client/data/storage.dart';
 import 'package:monzo_client/data/auth/token_storage.dart';
@@ -15,12 +16,14 @@ class AuthManager {
 
   final String _clientId = CLIENT_ID;
   final String _clientSecret = CLIENT_SECRET;
+  final String _redirectUrl = REDIRECT_URL;
   final Client _client = new Client();
   final Storage<Token> _tokenStorage = new TokenStorage();
 
   bool _initialized;
   bool _loggedIn;
   OauthClient _oauthClient;
+  String _state;
 
   Future init() async {
     Token oauthToken = await _tokenStorage.getValue();
@@ -36,29 +39,46 @@ class AuthManager {
     _initialized = true;
   }
 
-  Future<bool> login(String username, String password) async {
-    var basicToken = _getEncodedAuthorization(username, password);
-    final requestHeader = {
-      'Authorization': 'Basic $basicToken'
-    };
-    final requestBody = JSON.encode({
-      'client_id': _clientId,
-      'client_secret': _clientSecret
-    });
+  String get authUrl {
+    var clientId = CLIENT_ID;
+    var redirectUrl = REDIRECT_URL;
+    var uuid = new Uuid();
+    _state = uuid.v4();
+    return "https://auth.monzo.com/?client_id=$clientId"
+        "&redirect_uri=$redirectUrl&response_type=code&state=$_state";
+  }
 
-    final loginResponse = await _client.post(
-        'https://api.github.com/authorizations',
-        headers: requestHeader,
-        body: requestBody)
+  Future<bool> login(String redirectUri) async {
+    var uri = Uri.parse(redirectUri);
+    var code = uri.queryParameters['code'];
+    var state = uri.queryParameters['state'];
+
+    if (state != _state) {
+      return false;
+    }
+
+    final requestBody = <String, String>{
+      'grant_type': 'authorization_code',
+      'client_id': _clientId,
+      'client_secret': _clientSecret,
+      'redirect_uri': _redirectUrl,
+      'code': code
+    };
+
+    final loginResponse = await _client
+        .post('https://api.monzo.com/oauth2/token', body: requestBody)
         .whenComplete(_client.close);
 
-//    if (loginResponse.statusCode == 201) {
-//      final bodyJson = JSON.decode(loginResponse.body);
-//      await _saveToken(username, bodyJson['token']);
-//      _loggedIn = true;
-//    } else {
-//      _loggedIn = false;
-//    }
+    if (loginResponse.statusCode == 200) {
+      final bodyJson = json.decode(loginResponse.body);
+
+      print(bodyJson);
+
+      await _saveToken(bodyJson['access_token']);
+      _loggedIn = true;
+    } else {
+      _loggedIn = false;
+    }
 
     return _loggedIn;
   }
@@ -68,11 +88,6 @@ class AuthManager {
     _loggedIn = false;
   }
 
-  String _getEncodedAuthorization(String username, String password) {
-    final authorizationBytes = UTF8.encode('$username:$password');
-    return BASE64.encode(authorizationBytes);
-  }
-
   Future _saveToken(Token oauthToken) async {
     await _tokenStorage.setValue(oauthToken);
     _oauthClient = new OauthClient(_client, oauthToken?.accessToken);
@@ -80,7 +95,7 @@ class AuthManager {
 }
 
 class OauthClient extends _AuthClient {
-  OauthClient(Client client, String token) : super(client, 'token $token');
+  OauthClient(Client client, String token) : super(client, 'Bearer $token');
 }
 
 abstract class _AuthClient extends BaseClient {
@@ -91,7 +106,7 @@ abstract class _AuthClient extends BaseClient {
 
   @override
   Future<StreamedResponse> send(BaseRequest request) {
-    request.headers['Authorization'] = _authorization;
+//    request.headers['Authorization'] = _authorization;
     return _client.send(request);
   }
 }

@@ -1,20 +1,23 @@
 import 'package:flutter/material.dart';
 
+typedef void ActionCallback(BuildContext stock);
+
 class ActionButtons extends StatelessWidget {
   ActionButtons({
+    Key key,
     this.primaryButtonText,
     this.primaryButtonHandler,
     this.secondaryButtonText,
     this.secondaryButtonHandler
-  });
+  }) : super(key: key);
 
   final String primaryButtonText;
 
-  final VoidCallback primaryButtonHandler;
+  final ActionCallback primaryButtonHandler;
 
   final String secondaryButtonText;
 
-  final VoidCallback secondaryButtonHandler;
+  final ActionCallback secondaryButtonHandler;
 
   @override
   Widget build(BuildContext context) {
@@ -27,12 +30,12 @@ class ActionButtons extends StatelessWidget {
             new Container(
               margin: const EdgeInsets.only(bottom: 8.0),
               child: new RaisedButton(
-                onPressed: primaryButtonHandler,
+                onPressed: () => primaryButtonHandler(context),
                 child: new Text(primaryButtonText),
               ),
             ),
             new FlatButton(
-                onPressed: secondaryButtonHandler,
+                onPressed: () => secondaryButtonHandler(context),
                 child: new Text(secondaryButtonText)
             )
           ]

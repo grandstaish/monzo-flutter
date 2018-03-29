@@ -40,7 +40,7 @@
         <action android:name="android.intent.action.VIEW" />
         <category android:name="android.intent.category.DEFAULT" />
         <category android:name="android.intent.category.BROWSABLE" />
-        <data android:host="${redirectPath}" android:scheme="${redirectScheme}" />
+        <data android:host="${redirectHost}" android:scheme="${redirectScheme}" android:pathPrefix="${redirectPathPrefix}" />
       </intent-filter>
 
     </activity>
