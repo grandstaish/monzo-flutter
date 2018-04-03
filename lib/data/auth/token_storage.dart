@@ -16,7 +16,7 @@ class TokenStorage implements Storage<Token> {
     if (accessToken != null) {
       String expiresAtString = prefs.getString(expiresAtKey);
       DateTime expiresAt = DateTime.parse(expiresAtString);
-      return new Token(accessToken, expiresAt);
+      return new Token(accessToken: accessToken, expiresAt: expiresAt);
     }
     return null;
   }

@@ -6,6 +6,7 @@ import 'package:flutter/services.dart';
 import 'package:monzo_client/strings.dart';
 import 'package:monzo_client/data/auth/auth_manager.dart';
 import 'package:monzo_client/ui/config/palette.dart';
+import 'package:monzo_client/ui/config/routes.dart';
 import 'package:monzo_client/ui/common/action_buttons.dart';
 import 'package:monzo_client/ui/common/center_crop.dart';
 import 'package:monzo_client/ui/common/monzo_logo.dart';
@@ -31,14 +32,14 @@ class Login extends StatefulWidget {
 }
 
 class _LoginState extends State<Login> {
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+
   @override
   void initState() {
     super.initState();
-    _channel.invokeMethod('connect');
-
     var url = widget.authManager.authUrl;
+    _channel.invokeMethod('connect');
     _channel.invokeMethod('setUrl', <String, dynamic>{'url': url});
-
     _channel.setMethodCallHandler(_handlePlatformMessages);
   }
 
@@ -46,10 +47,11 @@ class _LoginState extends State<Login> {
   void dispose() {
     super.dispose();
     _channel.invokeMethod('disconnect');
+    _channel.setMethodCallHandler(null);
   }
 
   void _onContinuePressed(BuildContext context) {
-    print("Hello world!");
+    _showGeneralError();
   }
 
   void _onLoginPressed(BuildContext context) {
@@ -60,34 +62,57 @@ class _LoginState extends State<Login> {
     switch (call.method) {
       case "onRedirect":
         var uri = call.arguments['uri'];
-        setState(() {
-          // Loading
-        });
         bool successful = await widget.authManager.login(uri);
-        setState(() {
-          // Not loading
-        });
+        if (successful) {
+          // No transition
+          var transition = (BuildContext context, Animation<double> animation,
+              Animation<double> secondaryAnimation, Widget child) {
+            return child;
+          };
+          widget.router.navigateTo(
+              context,
+              Routes.root,
+              replace: true,
+              transitionDuration: const Duration(milliseconds: 0),
+              transition: TransitionType.custom,
+              transitionBuilder: transition
+          );
+        } else {
+          _showGeneralError();
+        }
         break;
       default:
         break;
     }
+    return null;
+  }
+
+  void _showGeneralError() {
+    var snackBar = new SnackBar(
+        content: new Text(Strings.of(context).generalError()),
+        backgroundColor: Palette.yellow
+    );
+    _scaffoldKey.currentState.showSnackBar(snackBar);
   }
 
   @override
   Widget build(BuildContext context) {
-    return new Stack(
-      alignment: Alignment.center,
-      children: <Widget>[
-        new _OnboardingVideoBackground(),
-        new _AnimatedMonzoLogo(),
-        new Align(
-          alignment: Alignment.bottomCenter,
-          child: _AnimatedActionButtons(
-            onContinuePressed: _onContinuePressed,
-            onLoginPressed: _onLoginPressed,
-          ),
-        )
-      ],
+    return new Scaffold(
+      key: _scaffoldKey,
+      body: new Stack(
+        alignment: Alignment.center,
+        children: <Widget>[
+          new _OnboardingVideoBackground(),
+          new _AnimatedMonzoLogo(),
+          new Align(
+            alignment: Alignment.bottomCenter,
+            child: _AnimatedActionButtons(
+              onContinuePressed: _onContinuePressed,
+              onLoginPressed: _onLoginPressed,
+            ),
+          )
+        ],
+      ),
     );
   }
 }

@@ -17,14 +17,21 @@ class OauthPlugin private constructor(private val registrar: Registrar) :
     MethodCallHandler
 {
   companion object {
-    fun registerWith(registrar: Registrar): MethodChannel {
-      val channel = MethodChannel(registrar.messenger(), "com.monzo/oauthPlugin")
-      channel.setMethodCallHandler(OauthPlugin(registrar))
-      return channel
+    private lateinit var channel: MethodChannel
+    private lateinit var plugin: OauthPlugin
+
+    fun registerWith(registrar: Registrar) {
+      plugin = OauthPlugin(registrar)
+      channel = MethodChannel(registrar.messenger(), "com.monzo/oauthPlugin")
+      channel.setMethodCallHandler(plugin)
     }
 
-    fun onRedirect(channel: MethodChannel, uri: String) {
+    fun onRedirect(uri: String) {
       channel.invokeMethod("onRedirect", mapOf("uri" to uri))
+    }
+
+    fun disconnectIfNeeded() {
+      plugin.disconnect()
     }
   }
 
@@ -49,7 +56,7 @@ class OauthPlugin private constructor(private val registrar: Registrar) :
         tabsIntent.launchUrl(registrar.activeContext(), uri)
       }
       "disconnect" -> {
-        registrar.activeContext().unbindService(this)
+        disconnect()
       }
     }
   }
@@ -68,5 +75,9 @@ class OauthPlugin private constructor(private val registrar: Registrar) :
 
   private fun tryLoad() {
     tabsSession?.mayLaunchUrl(uri, null, null)
+  }
+
+  private fun disconnect() {
+    registrar.activeContext().unbindService(this)
   }
 }

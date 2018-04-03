@@ -43,6 +43,13 @@ class Strings {
     desc: 'Login button on the onboarding screen',
     locale: _localeName,
   );
+
+  String generalError() => Intl.message(
+    'Sorry, there was a problem. Please try again and contact us if it continues.',
+    name: 'generalError',
+    desc: 'The default error message',
+    locale: _localeName,
+  );
 }
 
 class StocksLocalizationsDelegate extends LocalizationsDelegate<Strings> {

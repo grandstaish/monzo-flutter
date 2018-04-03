@@ -11,4 +11,6 @@ class Palette {
   static const Color white = const Color(0xFFFFFFFF);
 
   static const Color coral = const Color(0xFFE64B5F);
+
+  static const Color yellow = const Color(0xFFEEBB5C);
 }

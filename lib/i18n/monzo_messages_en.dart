@@ -18,8 +18,9 @@ class MessageLookup extends MessageLookupByLibrary {
   get localeName => 'en';
 
   final messages = _notInlinedMessages(_notInlinedMessages);
-  static _notInlinedMessages(_) => {
+  static _notInlinedMessages(_) => <String, Function> {
     "appTitle" : MessageLookupByLibrary.simpleMessage("Monzo"),
+    "generalError" : MessageLookupByLibrary.simpleMessage("Sorry, there was a problem. Please try again and contact us if it continues."),
     "onboardingLoginButton" : MessageLookupByLibrary.simpleMessage("I ALREADY HAVE A MONZO ACCOUNT"),
     "sharedContinueButton" : MessageLookupByLibrary.simpleMessage("CONTINUE")
   };

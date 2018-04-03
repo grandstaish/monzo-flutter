@@ -25,7 +25,7 @@ class AuthManager {
   OauthClient _oauthClient;
   String _state;
 
-  Future init() async {
+  Future<Null> init() async {
     Token oauthToken = await _tokenStorage.getValue();
 
     if (oauthToken == null) {
@@ -71,10 +71,9 @@ class AuthManager {
 
     if (loginResponse.statusCode == 200) {
       final bodyJson = json.decode(loginResponse.body);
-
-      print(bodyJson);
-
-      await _saveToken(bodyJson['access_token']);
+      var accessToken = bodyJson['access_token'];
+      var expiresIn = bodyJson['expires_in'];
+      await _saveToken(Token.newToken(accessToken, expiresIn));
       _loggedIn = true;
     } else {
       _loggedIn = false;
@@ -83,12 +82,12 @@ class AuthManager {
     return _loggedIn;
   }
 
-  Future logout() async {
+  Future<Null> logout() async {
     await _saveToken(null);
     _loggedIn = false;
   }
 
-  Future _saveToken(Token oauthToken) async {
+  Future<Null> _saveToken(Token oauthToken) async {
     await _tokenStorage.setValue(oauthToken);
     _oauthClient = new OauthClient(_client, oauthToken?.accessToken);
   }
@@ -106,7 +105,7 @@ abstract class _AuthClient extends BaseClient {
 
   @override
   Future<StreamedResponse> send(BaseRequest request) {
-//    request.headers['Authorization'] = _authorization;
+    request.headers['Authorization'] = _authorization;
     return _client.send(request);
   }
 }

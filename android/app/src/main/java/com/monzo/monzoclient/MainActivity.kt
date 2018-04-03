@@ -10,11 +10,12 @@ import io.flutter.plugins.GeneratedPluginRegistrant
 import android.graphics.drawable.Drawable
 import android.content.pm.PackageManager
 import android.content.res.Resources.NotFoundException
+import android.os.Handler
+import android.os.Looper
 import android.util.Log
 import android.util.TypedValue
 import android.view.ViewGroup.LayoutParams
 import android.view.ViewGroup
-import io.flutter.plugin.common.MethodChannel
 import io.flutter.view.FlutterView
 
 private const val SPLASH_SCREEN_META_DATA_KEY = "com.monzo.monzoclient.SplashScreenUntilFirstFrame"
@@ -22,15 +23,15 @@ private const val SPLASH_SCREEN_META_DATA_KEY = "com.monzo.monzoclient.SplashScr
 private val matchParent = LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT)
 
 class MainActivity: FlutterActivity() {
-  private var launchView: View? = null
+  private val handler = Handler(Looper.getMainLooper())
 
-  private lateinit var channel: MethodChannel
+  private var launchView: View? = null
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
     GeneratedPluginRegistrant.registerWith(this)
     VideoPlayerPlugin.registerWith(registrarFor("io.flutter.plugins.videoplayer.VideoPlayerPlugin"))
-    channel = OauthPlugin.registerWith(registrarFor("com.monzo.monzoclient.OauthPlugin"))
+    OauthPlugin.registerWith(registrarFor("com.monzo.monzoclient.OauthPlugin"))
 
     launchView = createLaunchView()
     if (launchView != null) {
@@ -38,6 +39,11 @@ class MainActivity: FlutterActivity() {
     }
 
     handleIntent(intent)
+  }
+
+  override fun onDestroy() {
+    super.onDestroy()
+    OauthPlugin.disconnectIfNeeded()
   }
 
   override fun onNewIntent(intent: Intent?) {
@@ -48,7 +54,11 @@ class MainActivity: FlutterActivity() {
   private fun handleIntent(intent: Intent?) {
     if (intent?.action == Intent.ACTION_VIEW) {
       setIntent(null)
-      OauthPlugin.onRedirect(channel, intent.data.toString())
+
+      // Not entirely sure why this post is needed, but the SnackBar won't show without it.
+      handler.post {
+        OauthPlugin.onRedirect(intent.data.toString())
+      }
     }
   }
 
