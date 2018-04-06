@@ -59,14 +59,14 @@ class _LoginState extends State<Login> with WidgetsBindingObserver {
   }
 
   void _connectIfNeeded() {
-    if (!_connected && mounted) {
+    if (!_connected) {
       _connected = true;
       _channel.invokeMethod('connect');
     }
   }
 
   void _disconnectIfNeeded() {
-    if (_connected && mounted) {
+    if (_connected) {
       _connected = false;
       _channel.invokeMethod('disconnect');
     }
