@@ -30,7 +30,6 @@ class MainActivity: FlutterActivity() {
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
     GeneratedPluginRegistrant.registerWith(this)
-    VideoPlayerPlugin.registerWith(registrarFor("io.flutter.plugins.videoplayer.VideoPlayerPlugin"))
     OauthPlugin.registerWith(registrarFor("com.monzo.monzoclient.OauthPlugin"))
 
     launchView = createLaunchView()
@@ -39,11 +38,6 @@ class MainActivity: FlutterActivity() {
     }
 
     handleIntent(intent)
-  }
-
-  override fun onDestroy() {
-    super.onDestroy()
-    OauthPlugin.disconnectIfNeeded()
   }
 
   override fun onNewIntent(intent: Intent?) {

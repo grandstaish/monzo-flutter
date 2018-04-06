@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'package:meta/meta.dart';
+import 'package:video_player/video_player.dart';
 import 'package:flutter/material.dart';
-import 'package:monzo_client/ui/common/video/video_player.dart';
 
 typedef Widget VideoWidgetBuilder(BuildContext context,
     VideoPlayerController controller, bool videoReallyPlaying);

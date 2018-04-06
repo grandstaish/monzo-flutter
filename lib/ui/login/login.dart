@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:meta/meta.dart';
 import 'package:fluro/fluro.dart';
+import 'package:video_player/video_player.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:monzo_client/strings.dart';
@@ -10,7 +11,6 @@ import 'package:monzo_client/ui/config/routes.dart';
 import 'package:monzo_client/ui/common/action_buttons.dart';
 import 'package:monzo_client/ui/common/center_crop.dart';
 import 'package:monzo_client/ui/common/monzo_logo.dart';
-import 'package:monzo_client/ui/common/video/video_player.dart';
 import 'package:monzo_client/ui/common/video/video_lifecycle.dart';
 
 const MethodChannel _channel = const MethodChannel("com.monzo/oauthPlugin");
@@ -31,14 +31,19 @@ class Login extends StatefulWidget {
   State<Login> createState() => _LoginState();
 }
 
-class _LoginState extends State<Login> {
+class _LoginState extends State<Login> with WidgetsBindingObserver {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+
+  bool _connected = false;
 
   @override
   void initState() {
     super.initState();
+    WidgetsBinding.instance.addObserver(this);
+
+    _connectIfNeeded();
+
     var url = widget.authManager.authUrl;
-    _channel.invokeMethod('connect');
     _channel.invokeMethod('setUrl', <String, dynamic>{'url': url});
     _channel.setMethodCallHandler(_handlePlatformMessages);
   }
@@ -46,8 +51,39 @@ class _LoginState extends State<Login> {
   @override
   void dispose() {
     super.dispose();
-    _channel.invokeMethod('disconnect');
+    WidgetsBinding.instance.removeObserver(this);
+
+    _disconnectIfNeeded();
+
     _channel.setMethodCallHandler(null);
+  }
+
+  void _connectIfNeeded() {
+    if (!_connected && mounted) {
+      _connected = true;
+      _channel.invokeMethod('connect');
+    }
+  }
+
+  void _disconnectIfNeeded() {
+    if (_connected && mounted) {
+      _connected = false;
+      _channel.invokeMethod('disconnect');
+    }
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    switch (state) {
+      case AppLifecycleState.paused:
+        _disconnectIfNeeded();
+        break;
+      case AppLifecycleState.resumed:
+        _connectIfNeeded();
+        break;
+      default:
+        break;
+    }
   }
 
   void _onContinuePressed(BuildContext context) {

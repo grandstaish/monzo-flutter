@@ -29,10 +29,6 @@ class OauthPlugin private constructor(private val registrar: Registrar) :
     fun onRedirect(uri: String) {
       channel.invokeMethod("onRedirect", mapOf("uri" to uri))
     }
-
-    fun disconnectIfNeeded() {
-      plugin.disconnect()
-    }
   }
 
   private var uri: Uri? = null
@@ -41,8 +37,7 @@ class OauthPlugin private constructor(private val registrar: Registrar) :
   override fun onMethodCall(call: MethodCall, result: Result) {
     when (call.method) {
       "connect" -> {
-        val tabsPackage = CustomTabsClient.getPackageName(registrar.activeContext(), null)
-        CustomTabsClient.bindCustomTabsService(registrar.activeContext(), tabsPackage, this)
+        connect()
       }
       "setUrl" -> {
         uri = Uri.parse(call.argument("url"))
@@ -75,6 +70,11 @@ class OauthPlugin private constructor(private val registrar: Registrar) :
 
   private fun tryLoad() {
     tabsSession?.mayLaunchUrl(uri, null, null)
+  }
+
+  private fun connect() {
+    val tabsPackage = CustomTabsClient.getPackageName(registrar.activeContext(), null)
+    CustomTabsClient.bindCustomTabsService(registrar.activeContext(), tabsPackage, this)
   }
 
   private fun disconnect() {
