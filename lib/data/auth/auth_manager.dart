@@ -8,15 +8,16 @@ import 'package:monzo_client/data/auth/token.dart';
 import 'package:monzo_client/keys.dart';
 
 class AuthManager {
+  static const String _redirectUrl = 'https://bradcampbell.nz/monzoflutter/-magic-auth/';
+  static const String _clientId = CLIENT_ID;
+  static const String _clientSecret = CLIENT_SECRET;
+
   bool get initialized => _initialized;
 
   bool get loggedIn => _loggedIn;
 
   OauthClient get oauthClient => _oauthClient;
 
-  final String _clientId = CLIENT_ID;
-  final String _clientSecret = CLIENT_SECRET;
-  final String _redirectUrl = REDIRECT_URL;
   final Client _client = new Client();
   final Storage<Token> _tokenStorage = new TokenStorage();
 
@@ -40,12 +41,10 @@ class AuthManager {
   }
 
   String get authUrl {
-    var clientId = CLIENT_ID;
-    var redirectUrl = REDIRECT_URL;
     var uuid = new Uuid();
     _state = uuid.v4();
-    return "https://auth.monzo.com/?client_id=$clientId"
-        "&redirect_uri=$redirectUrl&response_type=code&state=$_state";
+    return "https://auth.monzo.com/?client_id=$_clientId" +
+        "&redirect_uri=$_redirectUrl&response_type=code&state=$_state";
   }
 
   Future<bool> login(String redirectUri) async {

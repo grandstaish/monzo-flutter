@@ -10,10 +10,16 @@ import Foundation
 import Flutter
 
 public class OauthPlugin: NSObject, FlutterPlugin {
+    private static var channel: FlutterMethodChannel?
+    
     public static func register(with registrar: FlutterPluginRegistrar) {
-        let channel = FlutterMethodChannel(name: "com.monzo/oauthPlugin", binaryMessenger: registrar.messenger())
-        let plugin = OauthPlugin(channel: channel)
-        registrar.addMethodCallDelegate(plugin, channel: channel)
+        channel = FlutterMethodChannel(name: "com.monzo/oauthPlugin", binaryMessenger: registrar.messenger())
+        let plugin = OauthPlugin(channel: channel!)
+        registrar.addMethodCallDelegate(plugin, channel: channel!)
+    }
+    
+    public static func onRedirect(uri: String) {
+        channel!.invokeMethod("onRedirect", arguments: ["uri": uri])
     }
     
     private var oauthChannel: FlutterMethodChannel?

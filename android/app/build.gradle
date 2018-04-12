@@ -10,21 +10,6 @@ if (flutterRoot == null) {
       "Flutter SDK not found. Define location with flutter.sdk in the local.properties file.")
 }
 
-def clientProperties = new Properties()
-def clientPropertiesFile = rootProject.file('client.properties')
-if (clientPropertiesFile.exists()) {
-  clientPropertiesFile.withReader('UTF-8') { Reader reader -> clientProperties.load(reader) }
-}
-
-def redirectScheme = clientProperties.getProperty('redirect.scheme')
-def redirectHost = clientProperties.getProperty('redirect.host')
-def redirectPathPrefix = clientProperties.getProperty('redirect.path')
-if (redirectScheme == null || redirectHost == null || redirectPathPrefix == null) {
-  throw new IllegalStateException(
-      "Redirect URL not found. Define redirect.scheme, redirect.host, and redirect.path in " +
-          "the local.properties file.")
-}
-
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply from: "$flutterRoot/packages/flutter_tools/gradle/flutter.gradle"
@@ -50,12 +35,6 @@ android {
     versionName "1.0"
 
     testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
-
-    manifestPlaceholders << [
-        redirectScheme: redirectScheme,
-        redirectHost: redirectHost,
-        redirectPathPrefix: redirectPathPrefix
-    ]
   }
 
   buildTypes {
