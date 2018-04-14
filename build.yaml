@@ -1,16 +1,20 @@
 'targets': {
-  ':inject_generator': {
-    'sources': {
-      'include': [
-        'lib/app_component.dart',
-        'lib/app_module.dart',
-        'lib/ui/splash.dart',
-        'lib/ui/login/login.dart',
-        'lib/ui/home/home.dart',
-        'lib/data/feed/feed_manager.dart',
-        'lib/data/auth/auth_manager.dart',
-        'lib/data/accounts/accounts_manager.dart',
-      ]
+  $default: {
+    'builders': {
+      'inject_generator|inject_generator': {
+        'generate_for': {
+          'include': [
+            'lib/app_component.dart',
+            'lib/app_module.dart',
+            'lib/ui/splash.dart',
+            'lib/ui/login/login.dart',
+            'lib/ui/home/home.dart',
+            'lib/data/feed/feed_manager.dart',
+            'lib/data/auth/auth_manager.dart',
+            'lib/data/accounts/accounts_manager.dart',
+          ]
+        }
+      }
     }
   }
 }
