@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:monzo_client/app_component.dart';
-import 'package:monzo_client/strings.dart';
-import 'package:monzo_client/ui/config/theme.dart';
-import 'package:monzo_client/ui/config/routes.dart';
+import 'package:monzo_flutter/app_component.dart';
+import 'package:monzo_flutter/strings.dart';
+import 'package:monzo_flutter/ui/config/theme.dart';
+import 'package:monzo_flutter/ui/config/routes.dart';
 
 class App extends StatelessWidget {
-  final AppComponent _appComponent = null; // todo
+  final AppComponent appComponent;
 
-  App() {
-    Routes.configureRoutes(_appComponent);
+  App(this.appComponent) {
+    Routes.configureRoutes(appComponent);
   }
 
   @override
@@ -25,7 +25,7 @@ class App extends StatelessWidget {
         const Locale('en', 'UK'),
       ],
       theme: MonzoTheme.light,
-      onGenerateRoute: _appComponent.router().generator,
+      onGenerateRoute: appComponent.router().generator,
     );
   }
 }

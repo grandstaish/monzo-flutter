@@ -1,9 +1,9 @@
 import 'package:inject/inject.dart';
 import 'package:flutter/material.dart';
 import 'package:fluro/fluro.dart';
-import 'package:monzo_client/data/auth/auth_manager.dart';
-import 'package:monzo_client/data/accounts/accounts_manager.dart';
-import 'package:monzo_client/ui/config/routes.dart';
+import 'package:monzo_flutter/data/auth/auth_manager.dart';
+import 'package:monzo_flutter/data/accounts/accounts_manager.dart';
+import 'package:monzo_flutter/ui/config/routes.dart';
 
 class Home extends StatelessWidget {
   final Router router;

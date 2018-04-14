@@ -1,4 +1,4 @@
-name: monzo_client
+name: monzo_flutter
 description: The Monzo client written in flutter
 
 dependencies:

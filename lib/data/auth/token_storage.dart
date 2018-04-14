@@ -1,5 +1,5 @@
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:monzo_client/data/storage.dart';
+import 'package:monzo_flutter/data/storage.dart';
 import 'token.dart';
 import 'dart:async';
 

@@ -3,10 +3,10 @@ import 'dart:convert';
 import 'package:uuid/uuid.dart';
 import 'package:http/http.dart';
 import 'package:inject/inject.dart';
-import 'package:monzo_client/data/storage.dart';
-import 'package:monzo_client/data/auth/token_storage.dart';
-import 'package:monzo_client/data/auth/token.dart';
-import 'package:monzo_client/keys.dart';
+import 'package:monzo_flutter/data/storage.dart';
+import 'package:monzo_flutter/data/auth/token_storage.dart';
+import 'package:monzo_flutter/data/auth/token.dart';
+import 'package:monzo_flutter/keys.dart';
 
 @provide
 @singleton

@@ -1,5 +1,5 @@
 import 'package:inject/inject.dart';
-import 'package:monzo_client/data/auth/auth_manager.dart';
+import 'package:monzo_flutter/data/auth/auth_manager.dart';
 
 @provide
 class FeedManager {

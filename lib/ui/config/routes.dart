@@ -1,7 +1,7 @@
 import 'package:fluro/fluro.dart';
 import 'package:flutter/material.dart';
-import 'package:monzo_client/app_component.dart';
-import 'package:monzo_client/ui/config/theme.dart';
+import 'package:monzo_flutter/app_component.dart';
+import 'package:monzo_flutter/ui/config/theme.dart';
 
 class Routes {
   static String root = "/";

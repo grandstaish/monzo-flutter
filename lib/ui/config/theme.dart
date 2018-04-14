@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:monzo_client/ui/config/palette.dart';
+import 'package:monzo_flutter/ui/config/palette.dart';
 
 class MonzoTheme {
   static ThemeData dark = new ThemeData(

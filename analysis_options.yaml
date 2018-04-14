@@ -1,0 +1,7 @@
+analyzer:
+  strong-mode: true
+  exclude:
+    - "**/*.dart_tool/*"
+    - "**/build/*"
+  errors:
+    uri_does_not_exist: ignore

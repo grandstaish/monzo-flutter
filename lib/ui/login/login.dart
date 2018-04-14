@@ -4,14 +4,14 @@ import 'package:video_player/video_player.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:inject/inject.dart';
-import 'package:monzo_client/strings.dart';
-import 'package:monzo_client/data/auth/auth_manager.dart';
-import 'package:monzo_client/ui/config/palette.dart';
-import 'package:monzo_client/ui/config/routes.dart';
-import 'package:monzo_client/ui/common/action_buttons.dart';
-import 'package:monzo_client/ui/common/center_crop.dart';
-import 'package:monzo_client/ui/common/monzo_logo.dart';
-import 'package:monzo_client/ui/common/video/video_lifecycle.dart';
+import 'package:monzo_flutter/strings.dart';
+import 'package:monzo_flutter/data/auth/auth_manager.dart';
+import 'package:monzo_flutter/ui/config/palette.dart';
+import 'package:monzo_flutter/ui/config/routes.dart';
+import 'package:monzo_flutter/ui/common/action_buttons.dart';
+import 'package:monzo_flutter/ui/common/center_crop.dart';
+import 'package:monzo_flutter/ui/common/monzo_logo.dart';
+import 'package:monzo_flutter/ui/common/video/video_lifecycle.dart';
 
 const MethodChannel _channel = const MethodChannel("com.monzo/oauthPlugin");
 

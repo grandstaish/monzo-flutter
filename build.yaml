@@ -4,6 +4,7 @@
       'inject_generator|inject_generator': {
         'generate_for': {
           'include': [
+            'lib/**.inject.summary',
             'lib/app_component.dart',
             'lib/app_module.dart',
             'lib/ui/splash.dart',
