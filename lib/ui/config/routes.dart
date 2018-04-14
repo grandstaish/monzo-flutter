@@ -1,6 +1,7 @@
 import 'package:fluro/fluro.dart';
 import 'package:flutter/material.dart';
 import 'package:monzo_client/data/auth/auth_manager.dart';
+import 'package:monzo_client/data/accounts/accounts_manager.dart';
 import 'package:monzo_client/ui/config/theme.dart';
 import 'package:monzo_client/ui/splash.dart';
 import 'package:monzo_client/ui/home/home.dart';
@@ -11,7 +12,7 @@ class Routes {
   static String home = "/home";
   static String login = "/login";
 
-  static void configureRoutes(Router router, AuthManager authManager) {
+  static void configureRoutes(Router router, AuthManager authManager, AccountsManager accountsManager) {
     router.notFoundHandler = new Handler(handlerFunc: (context, params) {
       print("Route not found.");
     });
@@ -39,7 +40,7 @@ class Routes {
     router.define(
         home,
         handler: new Handler(handlerFunc: (context, params) {
-          return new Home(router: router, authManager: authManager);
+          return new Home(router: router, authManager: authManager, accountsManager: accountsManager);
         }),
     );
   }

@@ -5,13 +5,15 @@ import 'package:monzo_client/strings.dart';
 import 'package:monzo_client/ui/config/theme.dart';
 import 'package:monzo_client/ui/config/routes.dart';
 import 'package:monzo_client/data/auth/auth_manager.dart';
+import 'package:monzo_client/data/accounts/accounts_manager.dart';
 
 class App extends StatelessWidget {
   final Router _router = new Router();
-  final AuthManager _authManager = new AuthManager();
 
   App() {
-    Routes.configureRoutes(_router, _authManager);
+    final AuthManager authManager = new AuthManager();
+    final AccountsManager accountsManager = new AccountsManager(authManager);
+    Routes.configureRoutes(_router, authManager, accountsManager);
   }
 
   @override
