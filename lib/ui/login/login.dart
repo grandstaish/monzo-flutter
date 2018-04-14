@@ -1,9 +1,9 @@
 import 'dart:async';
-import 'package:meta/meta.dart';
 import 'package:fluro/fluro.dart';
 import 'package:video_player/video_player.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:inject/inject.dart';
 import 'package:monzo_client/strings.dart';
 import 'package:monzo_client/data/auth/auth_manager.dart';
 import 'package:monzo_client/ui/config/palette.dart';
@@ -16,16 +16,11 @@ import 'package:monzo_client/ui/common/video/video_lifecycle.dart';
 const MethodChannel _channel = const MethodChannel("com.monzo/oauthPlugin");
 
 class Login extends StatefulWidget {
-  Login({
-    Key key,
-    @required this.router,
-    @required this.authManager
-  }) : assert(router != null),
-       assert(authManager != null),
-       super(key: key);
-
   final Router router;
   final AuthManager authManager;
+
+  @provide
+  Login(this.router, this.authManager);
 
   @override
   State<Login> createState() => _LoginState();

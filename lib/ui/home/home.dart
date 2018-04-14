@@ -1,4 +1,4 @@
-import 'package:meta/meta.dart';
+import 'package:inject/inject.dart';
 import 'package:flutter/material.dart';
 import 'package:fluro/fluro.dart';
 import 'package:monzo_client/data/auth/auth_manager.dart';
@@ -6,18 +6,12 @@ import 'package:monzo_client/data/accounts/accounts_manager.dart';
 import 'package:monzo_client/ui/config/routes.dart';
 
 class Home extends StatelessWidget {
-  Home({
-    Key key,
-    @required this.router,
-    @required this.authManager,
-    @required this.accountsManager
-  }) : assert(router != null),
-        assert(authManager != null),
-        super(key: key);
-
   final Router router;
   final AuthManager authManager;
   final AccountsManager accountsManager;
+
+  @provide
+  Home(this.router, this.authManager, this.accountsManager);
 
   void _loadAccounts() async {
     var response = await accountsManager.loadAccounts();

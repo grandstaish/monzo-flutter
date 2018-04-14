@@ -1,9 +1,11 @@
 import 'dart:async';
 import 'dart:convert';
+import 'package:inject/inject.dart';
 import 'package:monzo_client/data/auth/auth_manager.dart';
 import 'package:monzo_client/data/accounts/accounts.dart';
 import 'package:monzo_client/data/serializers.dart';
 
+@provide
 class AccountsManager {
   final AuthManager _authManager;
 

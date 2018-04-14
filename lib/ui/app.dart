@@ -1,19 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:fluro/fluro.dart';
+import 'package:monzo_client/app_component.dart';
 import 'package:monzo_client/strings.dart';
 import 'package:monzo_client/ui/config/theme.dart';
 import 'package:monzo_client/ui/config/routes.dart';
-import 'package:monzo_client/data/auth/auth_manager.dart';
-import 'package:monzo_client/data/accounts/accounts_manager.dart';
 
 class App extends StatelessWidget {
-  final Router _router = new Router();
+  final AppComponent _appComponent = null; // todo
 
   App() {
-    final AuthManager authManager = new AuthManager();
-    final AccountsManager accountsManager = new AccountsManager(authManager);
-    Routes.configureRoutes(_router, authManager, accountsManager);
+    Routes.configureRoutes(_appComponent);
   }
 
   @override
@@ -29,7 +25,7 @@ class App extends StatelessWidget {
         const Locale('en', 'UK'),
       ],
       theme: MonzoTheme.light,
-      onGenerateRoute: _router.generator,
+      onGenerateRoute: _appComponent.router().generator,
     );
   }
 }

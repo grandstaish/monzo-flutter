@@ -1,20 +1,15 @@
 import 'dart:async';
-import 'package:meta/meta.dart';
+import 'package:inject/inject.dart';
 import 'package:flutter/material.dart';
 import 'package:fluro/fluro.dart';
 import 'package:monzo_client/data/auth/auth_manager.dart';
 
 class Splash extends StatefulWidget {
-  Splash({
-    Key key,
-    @required this.router,
-    @required this.authManager
-  }) : assert(router != null),
-       assert(authManager != null),
-       super(key: key);
-
   final Router router;
   final AuthManager authManager;
+
+  @provide
+  Splash(this.router, this.authManager);
 
   @override
   State<StatefulWidget> createState() {

@@ -2,11 +2,14 @@ import 'dart:async';
 import 'dart:convert';
 import 'package:uuid/uuid.dart';
 import 'package:http/http.dart';
+import 'package:inject/inject.dart';
 import 'package:monzo_client/data/storage.dart';
 import 'package:monzo_client/data/auth/token_storage.dart';
 import 'package:monzo_client/data/auth/token.dart';
 import 'package:monzo_client/keys.dart';
 
+@provide
+@singleton
 class AuthManager {
   static const String _redirectUrl = 'https://bradcampbell.nz/monzoflutter/-magic-auth/';
   static const String _clientId = CLIENT_ID;
