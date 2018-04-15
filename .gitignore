@@ -30,7 +30,7 @@ unlinked.ds
 unlinked_spec.ds
 
 # lib
-lib/keys.dart
+# lib/keys.dart
 lib/i18n/intl_messages.arb
 
 *.g.dart
